@@ -352,13 +352,13 @@ public static class EntityExtensions
 			{
 				Id = s.Id,
 				System = s.System != null ? s.System!.Code : "Unknown",
-				GameName = s.GameVersion != null && !string.IsNullOrWhiteSpace(s.GameVersion.TitleOverride) ? s.GameVersion.TitleOverride : s.Game != null ? s.Game.DisplayName : s.GameName,
+				Game = s.GameVersion != null && !string.IsNullOrWhiteSpace(s.GameVersion.TitleOverride) ? s.GameVersion.TitleOverride : s.Game != null ? s.Game.DisplayName : s.GameName,
 				Frames = s.Frames,
 				FrameRate = s.SystemFrameRateId != null ? s.SystemFrameRate!.FrameRate : 60,
 				Branch = s.Branch,
-				Authors = s.SubmissionAuthors.OrderBy(sa => sa.Ordinal).Select(sa => sa.Author!.UserName).ToList(),
+				By = s.SubmissionAuthors.OrderBy(sa => sa.Ordinal).Select(sa => sa.Author!.UserName).ToList(),
 				AdditionalAuthors = s.AdditionalAuthors,
-				Submitted = s.CreateTimestamp,
+				Date = s.CreateTimestamp,
 				Status = s.Status,
 				Judge = s.Judge != null ? s.Judge.UserName : null,
 				Publisher = s.Publisher != null ? s.Publisher.UserName : null,
@@ -510,8 +510,8 @@ public static class EntityExtensions
 	{
 		return submissions.Select(s => new Pages.Submissions.PublishModel.SubmissionPublishModel
 		{
-			SystemCode = s.System!.Code,
-			SystemRegion = s.SystemFrameRate!.RegionCode + " " + s.SystemFrameRate.FrameRate,
+			System = s.System!.Code,
+			Region = s.SystemFrameRate!.RegionCode + " " + s.SystemFrameRate.FrameRate,
 			Game = s.Game!.DisplayName,
 			GameId = s.GameId ?? 0,
 			GameVersion = s.GameVersion!.Name,
@@ -539,7 +539,7 @@ public static class EntityExtensions
 			Description = r.Description,
 			AutoAssignPostCount = r.AutoAssignPostCount,
 			AutoAssignPublications = r.AutoAssignPublications,
-			Links = r.RoleLinks
+			RelatedLinks = r.RoleLinks
 				.Select(rl => rl.Link)
 				.ToList(),
 			SelectedPermissions = r.RolePermission

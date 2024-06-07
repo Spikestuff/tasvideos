@@ -184,7 +184,6 @@ public class EditModel(
 	public class GameEdit
 	{
 		[StringLength(100)]
-		[Display(Name = "Display Name")]
 		public string DisplayName { get; set; } = "";
 
 		[StringLength(24)]
@@ -194,11 +193,9 @@ public class EditModel(
 		public string? Aliases { get; set; }
 
 		[StringLength(250)]
-		[Display(Name = "Screenshot URL")]
 		public string? ScreenshotUrl { get; init; }
 
 		[StringLength(300)]
-		[Display(Name = "Game Resources Page")]
 		public string? GameResourcesPage { get; set; }
 		public List<int> Genres { get; init; } = [];
 		public List<int> Groups { get; init; } = [];

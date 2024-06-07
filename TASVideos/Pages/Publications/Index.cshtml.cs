@@ -79,30 +79,20 @@ public class IndexModel(ApplicationDbContext db, IMovieSearchTokens movieTokens)
 
 	public class PublicationSearch : IPublicationTokens
 	{
-		[Display(Name = "Platform")]
 		public ICollection<string> SystemCodes { get; init; } = [];
 		public ICollection<string> Classes { get; init; } = [];
 		public ICollection<int> Years { get; init; } = [];
 		public ICollection<string> Tags { get; init; } = [];
 		public ICollection<string> Genres { get; init; } = [];
 		public ICollection<string> Flags { get; init; } = [];
-
-		[Display(Name = "Show Obsoleted")]
 		public bool ShowObsoleted { get; init; }
-
-		[Display(Name = "Only Obsoleted")]
 		public bool OnlyObsoleted { get; init; }
-
 		public string SortBy { get; init; } = "";
 		public int? Limit { get; init; }
 
 		public ICollection<int> Authors { get; init; } = [];
-
 		public ICollection<int> MovieIds { get; init; } = [];
-
 		public ICollection<int> Games { get; init; } = [];
-
-		[Display(Name = "Game Groups")]
 		public ICollection<int> GameGroups { get; init; } = [];
 
 		public bool IsEmpty => !SystemCodes.Any()

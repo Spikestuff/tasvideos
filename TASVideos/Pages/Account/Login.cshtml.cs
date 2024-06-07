@@ -7,13 +7,10 @@ namespace TASVideos.Pages.Account;
 [IpBanCheck]
 public class LoginModel(SignInManager signInManager, IHostEnvironment env) : BasePageModel
 {
-	[Display(Name = "User Name")]
 	public string UserName { get; set; } = "";
 
 	[DataType(DataType.Password)]
 	public string Password { get; set; } = "";
-
-	[Display(Name = "Remember me?")]
 	public bool RememberMe { get; set; }
 
 	public async Task<IActionResult> OnGet()

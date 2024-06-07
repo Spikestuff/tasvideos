@@ -89,7 +89,7 @@ internal class QueueService(
 		}
 
 		var perms = userPermissions.ToList();
-		if (perms.Contains(PermissionTo.OverrideSubmissionStatus))
+		if (perms.Contains(PermissionTo.OverrideSubmissionConstraints))
 		{
 			return Enum.GetValues<SubmissionStatus>()
 				.Except([Published]) // Published status must only be set when being published
@@ -183,7 +183,7 @@ internal class QueueService(
 	{
 		if (submission.Status.CanBeJudged())
 		{
-			var diff = (DateTime.UtcNow - submission.Submitted).TotalHours;
+			var diff = (DateTime.UtcNow - submission.Date).TotalHours;
 			return _minimumHoursBeforeJudgment - (int)diff;
 		}
 
