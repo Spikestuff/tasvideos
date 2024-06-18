@@ -1,20 +1,9 @@
 ﻿@page "/Games/{gameId}/Versions/Edit/{id?}/{handler?}"
 @model EditModel
 @{
-	string saveBtnName;
-	string iconClass;
-	if (Model.Id.HasValue)
-	{
-		ViewData.SetTitle($"Editing Game Version #{Model.Id} {Model.Version.Name}");
-		saveBtnName = "Save";
-		iconClass = "fa fa-save";
-	}
-	else
-	{
-		ViewData.SetTitle("Create A New Game Version Entry");
-		saveBtnName = "Create";
-		iconClass = "fa fa-plus";
-	}
+	ViewData.SetTitle(Model.Id.HasValue
+		? $"Editing Game Version #{Model.Id} {Model.Version.Name}"
+		: "Create A New Game Version Entry");
 	var deleteLink = $"/Games/{Model.GameId}/Versions/Edit/{Model.Id ?? 0}/Delete";
 }
 
@@ -25,26 +14,26 @@
 <form client-side-validation="true" method="post">
 	<input type="hidden" asp-for="GameName" />
 	<row>
-		<div class="col-lg-6">
+		<column lg="6">
 			<fieldset>
 				<label asp-for="Version.System"></label>
-				<select asp-for="Version.System" asp-items="@Model.AvailableSystems.OrderBy(s => s.Value)" class="form-select"></select>
-				<span asp-validation-for="Version.System" class="text-danger"></span>
+				<select asp-for="Version.System" asp-items="@Model.AvailableSystems.OrderBy(s => s.Value)"></select>
+				<span asp-validation-for="Version.System"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.Name"></label>
-				<input type="text" asp-for="Version.Name" class="form-control" autocomplete="off" />
-				<span asp-validation-for="Version.Name" class="text-danger"></span>
+				<input asp-for="Version.Name" autocomplete="off" />
+				<span asp-validation-for="Version.Name"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.Sha1"></label>
-				<input type="text" asp-for="Version.Sha1" class="form-control" autocomplete="off" spellcheck="false" />
-				<span asp-validation-for="Version.Sha1" class="text-danger"></span>
+				<input asp-for="Version.Sha1" data-id="sha1" autocomplete="off" spellcheck="false" />
+				<span asp-validation-for="Version.Sha1"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.Md5"></label>
-				<input type="text" asp-for="Version.Md5" class="form-control" autocomplete="off" spellcheck="false" />
-				<span asp-validation-for="Version.Md5" class="text-danger"></span>
+				<input asp-for="Version.Md5" data-id="md5" autocomplete="off" spellcheck="false" />
+				<span asp-validation-for="Version.Md5"></span>
 			</fieldset>
 			<fieldset>
 				<div id="hash-drop-area" role="button" class="border border-silver rounded p-2 text-body-tertiary">
@@ -63,32 +52,32 @@
 					</fullrow>
 				</div>
 			</fieldset>
-		</div>
-		<div class="col-lg-6">
+		</column>
+		<column lg="6">
 			<fieldset>
 				<label asp-for="Version.Type"></label>
-				<select asp-for="Version.Type" asp-items="@Model.AvailableVersionTypes.OrderBy(s => s.Value)" class="form-select"></select>
-				<span asp-validation-for="Version.Type" class="text-danger"></span>
+				<select asp-for="Version.Type" asp-items="@Model.AvailableVersionTypes.OrderBy(s => s.Value)"></select>
+				<span asp-validation-for="Version.Type"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.TitleOverride"></label>
-				<input type="text" asp-for="Version.TitleOverride" class="form-control" />
-				<span asp-validation-for="Version.TitleOverride" class="text-danger"></span>
+				<input asp-for="Version.TitleOverride" />
+				<span asp-validation-for="Version.TitleOverride"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.Version"></label>
-				<input type="text" asp-for="Version.Version" class="form-control" autocomplete="off" spellcheck="false" />
-				<span asp-validation-for="Version.Version" class="text-danger"></span>
+				<input asp-for="Version.Version" autocomplete="off" spellcheck="false" />
+				<span asp-validation-for="Version.Version"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Version.Region"></label>
-				<select asp-for="Version.Region" asp-items="@Model.AvailableRegionTypes" class="form-select"></select>
-				<span asp-validation-for="Version.Region" class="text-danger"></span>
+				<select asp-for="Version.Region" asp-items="@Model.AvailableRegionTypes"></select>
+				<span asp-validation-for="Version.Region"></span>
 			</fieldset>
-		</div>
+		</column>
 	</row>
 	<form-button-bar>
-		<submit-button id="submit-btn"><i class="@iconClass"></i> @saveBtnName</submit-button>
+		<submit-button edit="@Model.Id.HasValue"></submit-button>
 		<cancel-link asp-page="/Games/Versions/List" asp-route-gameId="@Model.GameId"></cancel-link>
 	</form-button-bar>
 </form>
@@ -96,90 +85,5 @@
 
 @section Scripts {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		let dropArea = document.getElementById('hash-drop-area');
-		let hashInput = document.getElementById('hash-input');
-		let hashProgress = document.getElementById('hash-progress');
-		let sha1Input = document.getElementById('@Html.IdFor(model => model.Version.Sha1)');
-		let md5Input = document.getElementById('@Html.IdFor(model => model.Version.Md5)');
-		function dropEnterStyle() {
-			dropArea.classList.add('border-secondary');
-			dropArea.classList.remove('border-silver');
-		}
-		function dropLeaveStyle() {
-			dropArea.classList.add('border-silver');
-			dropArea.classList.remove('border-secondary');
-		}
-		function calculateHashes(file) {
-			const sha1 = CryptoJS.algo.SHA1.create();
-			const md5 = CryptoJS.algo.MD5.create();
-			const fileSize = file.size;
-			const chunkSize = 16 * 1024 * 1024;
-			let offset = 0;
-
-			if (fileSize > chunkSize) {
-				hashProgress.style.width = '0%';
-				hashProgress.parentElement.classList.remove('d-none');
-			}
-
-			const reader = new FileReader();
-			reader.onload = function () {
-				offset += reader.result.length;
-				sha1.update(CryptoJS.enc.Latin1.parse(reader.result));
-				md5.update(CryptoJS.enc.Latin1.parse(reader.result));
-				hashProgress.style.width = `${Math.ceil((offset / fileSize) * 100)}%`;
-				if (offset >= fileSize) {
-					const sha1Hash = sha1.finalize();
-					const md5Hash = md5.finalize();
-					sha1Input.value = sha1Hash.toString(CryptoJS.enc.Hex);
-					md5Input.value = md5Hash.toString(CryptoJS.enc.Hex);
-					setTimeout(() => { hashProgress.parentElement.classList.add('d-none'); }, 600);
-					return;
-				}
-				readNext();
-			};
-
-			function readNext() {
-				const fileSlice = file.slice(offset, offset + chunkSize);
-				reader.readAsBinaryString(fileSlice);
-			}
-
-			readNext();
-		}
-		hashInput.addEventListener('change', (e) => {
-			calculateHashes(e.currentTarget.files[0]);
-		});
-		dropArea.addEventListener('click', () => {
-			hashInput.click();
-		});
-		dropArea.addEventListener('dragover', (e) => {
-			e.preventDefault();
-		});
-		let dropCount = 0;
-		dropArea.addEventListener('dragenter', () => {
-			if (dropCount == 0) {
-				dropEnterStyle();
-			}
-			dropCount++;
-		});
-		dropArea.addEventListener('dragleave', () => {
-			dropCount--;
-			if (dropCount == 0) {
-				dropLeaveStyle();
-			}
-		});
-		dropArea.addEventListener('drop', (e) => {
-			e.preventDefault();
-			dropLeaveStyle();
-			dropCount = 0;
-			if (e.dataTransfer.items) {
-				for (let item of e.dataTransfer.items) {
-					if (item.kind == 'file') {
-						calculateHashes(item.getAsFile());
-						break;
-					}
-				}
-			}
-		});
-	</script>
+	<script src="/js/games-edit.js"></script>
 }

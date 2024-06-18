@@ -51,34 +51,35 @@
 <hr />
 <form client-side-validation="true" method="post" enctype="multipart/form-data">
 	<input type="hidden" asp-for="Submission.SystemId" />
+	<input type="hidden" asp-for="Id" />
 	<row>
 		<input type="hidden" asp-for="Submission.MovieExtension" />
 		<column lg="6">
 			<fieldset>
 				<label asp-for="Submission.MovieToObsolete">Select movie to be obsoleted</label>
-				<input asp-for="Submission.MovieToObsolete" class="form-control" />
-				<span asp-validation-for="Submission.MovieToObsolete" class="text-danger"></span>
+				<input asp-for="Submission.MovieToObsolete" data-id="obsolete" />
+				<span asp-validation-for="Submission.MovieToObsolete"></span>
 				<span id="obsoleted-by"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Submission.OnlineWatchingUrl">Online-watching URL</label>
-				<input type="text" asp-for="Submission.OnlineWatchingUrl" class="form-control" />
-				<span asp-validation-for="Submission.OnlineWatchingUrl" class="text-danger"></span>
+				<input asp-for="Submission.OnlineWatchingUrl" />
+				<span asp-validation-for="Submission.OnlineWatchingUrl"></span>
 				<label asp-for="Submission.OnlineWatchUrlName">Online-watching URL Display Name (Optional)</label>
-				<input type="text" asp-for="Submission.OnlineWatchUrlName" class="form-control"/>
-				<span asp-validation-for="Submission.OnlineWatchUrlName" class="text-danger"></span>
+				<input asp-for="Submission.OnlineWatchUrlName" />
+				<span asp-validation-for="Submission.OnlineWatchUrlName"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Submission.MirrorSiteUrl">Mirror site URL</label>
-				<input type="text" asp-for="Submission.MirrorSiteUrl" class="form-control" />
-				<span asp-validation-for="Submission.MirrorSiteUrl" class="text-danger"></span>
+				<input asp-for="Submission.MirrorSiteUrl" />
+				<span asp-validation-for="Submission.MirrorSiteUrl"></span>
 			</fieldset>
 		</column>
 		<column lg="6">
 			<fieldset>
 				<label asp-for="Submission.MovieFilename"></label>
 				<div class="input-group">
-					<input type="text" asp-for="Submission.MovieFilename" class="form-control" />
+					<input asp-for="Submission.MovieFilename" />
 					<div class="input-group-append">
 						<span class="input-group-text">
 							.@Model.Submission.MovieExtension
@@ -86,54 +87,54 @@
 					</div>
 				</div>
 				<div>Please follow the convention: xxxv#-yyy where xxx is author name, # is version and yyy is game name. Special characters such as \"&\" and \"/\" and \".\" and spaces must not occur in the filename.</div>
-				<span asp-validation-for="Submission.MovieFilename" class="text-danger"></span>
+				<span asp-validation-for="Submission.MovieFilename"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Submission.Screenshot"></label>
-				<input asp-for="Submission.Screenshot" class="form-control" />
+				<input asp-for="Submission.Screenshot" />
 				<span>
 					Must be JPEG or PNG
 					<br />
 					(Please read <a href="/PublisherGuidelines">Publisher guidelines</a> for guidelines regarding screenshot selection.)
 				</span>
-				<span asp-validation-for="Submission.Screenshot" class="text-danger"></span>
+				<span asp-validation-for="Submission.Screenshot"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Submission.ScreenshotDescription">Description</label>
-				<input asp-for="Submission.ScreenshotDescription" type="text" class="form-control" />
+				<input asp-for="Submission.ScreenshotDescription" />
 				<div>Caption, describe what happens in the screenshot</div>
-				<span asp-validation-for="Submission.ScreenshotDescription" class="text-danger"></span>
+				<span asp-validation-for="Submission.ScreenshotDescription"></span>
 			</fieldset>
 		</column>
 	</row>
 	<hr />
 	<row>
 		<column lg="6">
-			<partial name="_WikiEditHelper" model="@("Submission_MovieMarkup")" />
+			<wiki-edit-helper></wiki-edit-helper>
 			<fieldset>
 				<label asp-for="Submission.MovieDescription"></label>
-				<textarea asp-for="Submission.MovieDescription" class="form-control" rows="10" placeholder="Enter your __wiki markup__ here..."></textarea>
-				<span asp-validation-for="Submission.MovieDescription" class="text-danger"></span>
+				<textarea asp-for="Submission.MovieDescription" data-id="wiki-edit" rows="10" placeholder="Enter your __wiki markup__ here..."></textarea>
+				<span asp-validation-for="Submission.MovieDescription"></span>
 			</fieldset>
 		</column>
 		<column lg="6">
 			<fieldset>
 				<label asp-for="Markup">Submission description (for quoting, reference, etc)</label>
-				<textarea readonly class="form-control" rows="10" asp-for="Markup"></textarea>
+				<textarea readonly rows="10" asp-for="Markup"></textarea>
 			</fieldset>
 		</column>
 	</row>
 	<preview-button></preview-button>
-	<partial name="_PreviewWindow" model="@(Html.IdFor(m => m.Submission.MovieDescription), "/Wiki/Preview")" />
+	<wiki-preview></wiki-preview>
 	<hr />
 	<fullrow>
 		<fieldset>
 			<label asp-for="Submission.SelectedFlags"></label>
-			<select asp-for="Submission.SelectedFlags" multiselect="true" asp-items="Model.AvailableFlags" class="form-select"></select>
+			<select asp-for="Submission.SelectedFlags" multiselect="true" asp-items="Model.AvailableFlags"></select>
 		</fieldset>
 		<fieldset>
 			<label asp-for="Submission.SelectedTags"></label>
-			<select asp-for="Submission.SelectedTags" multiselect="true" asp-items="Model.AvailableTags" class="form-select"></select>
+			<select asp-for="Submission.SelectedTags" data-id="tags" multiselect="true" asp-items="Model.AvailableTags"></select>
 		</fieldset>
 	</fullrow>
 	<hr />
@@ -145,39 +146,5 @@
 </form>
 
 @section Scripts {
-	<script>
-		const selectedTagsId = "@Html.IdFor(m => m.Submission.SelectedTags)";
-		let originalDescription = "@Model.Submission.MovieDescription";
-		const obsoletionModel = document.getElementById("@Html.IdFor(m => m.Submission.MovieToObsolete)");
-		const descriptionModel = document.getElementById("@Html.IdFor(m => m.Submission.MovieDescription)");
-
-		descriptionModel.onchange = function() {
-			originalDescription = descriptionModel.value;
-		}
-
-		obsoletionModel.onchange = function() {
-			if (!obsoletionModel.value) {
-				descriptionModel.value = originalDescription;
-				return;
-			}
-
-			document.getElementById("obsoleted-by").innerHTML = "";
-			const url = `/Submissions/Publish/@(Model.Id)?handler=ObsoletePublication&publicationId=${obsoletionModel.value}`;
-			fetch(url)
-				.then(handleFetchErrors)
-				.then(r => r.json())
-				.then(t => {
-					const oldValue = originalDescription;
-					descriptionModel.value = t.markup;
-					originalDescription = oldValue;
-
-					document.getElementById("obsoleted-by").innerHTML = t.title ? t.title : "Unknown publication";
-
-					for (let option of document.querySelectorAll(`#${selectedTagsId} option`)) {
-						option.selected = t.tags.includes(Number(option.value));
-					}
-					engageSelectImprover('@Html.IdFor(m => m.Submission.SelectedTags)');
-				});
-		}
-	</script>
+	<script src="/js/publish.js"></script>
 }

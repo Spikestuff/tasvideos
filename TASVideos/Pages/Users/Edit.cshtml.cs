@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using TASVideos.Core.Services.ExternalMediaPublisher;
-
-namespace TASVideos.Pages.Users;
+﻿namespace TASVideos.Pages.Users;
 
 [RequirePermission(PermissionTo.EditUsers)]
 public class EditModel(
@@ -203,8 +200,6 @@ public class EditModel(
 		public string? Location { get; init; }
 		public List<int> SelectedRoles { get; init; } = [];
 		public DateTime AccountCreatedOn { get; init; }
-
-		[DisplayFormat(NullDisplayText = "Never")]
 		public DateTime? UserLastLoggedIn { get; init; }
 
 		[EmailAddress]

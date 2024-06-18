@@ -8,12 +8,12 @@
 	<row>
 		<column lg="6">
 			<label asp-for="Genre.DisplayName"></label>
-			<input type="text" asp-for="Genre.DisplayName" class="form-control" />
-			<span asp-validation-for="Genre.DisplayName" class="text-danger"></span>
+			<input asp-for="Genre.DisplayName" />
+			<span asp-validation-for="Genre.DisplayName"></span>
 		</column>
 	</row>
 	<form-button-bar>
-		<submit-button><i class="fa fa-save"></i> Create</submit-button>
+		<submit-button edit="false"></submit-button>
 		<cancel-link asp-page="Index"></cancel-link>
 	</form-button-bar>
 </form>

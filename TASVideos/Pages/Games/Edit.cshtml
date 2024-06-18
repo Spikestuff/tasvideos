@@ -2,7 +2,7 @@
 @model EditModel
 @{
 	ViewData.SetTitle(Model.Id.HasValue
-	? $"Editing Game #{Model.Id} {Model.Game.DisplayName}"
+		? $"Editing Game #{Model.Id} {Model.Game.DisplayName}"
 		: "Create a new Game entry");
 }
 <top-button-bar>
@@ -11,16 +11,16 @@
 </top-button-bar>
 <form client-side-validation="true" method="post">
 	<row>
-		<div class="col-lg-6">
+		<column lg="6">
 			<fieldset>
 				<label asp-for="Game.DisplayName"></label>
-				<input type="text" asp-for="Game.DisplayName" class="form-control" autocomplete="off" />
-				<span asp-validation-for="Game.DisplayName" class="text-danger"></span>
+				<input asp-for="Game.DisplayName" autocomplete="off" />
+				<span asp-validation-for="Game.DisplayName"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Game.Abbreviation"></label>
 				<div class="input-group">
-					<input type="text" asp-for="Game.Abbreviation" class="form-control" autocomplete="off" spellcheck="false" style="text-transform: lowercase;" />
+					<input asp-for="Game.Abbreviation" autocomplete="off" spellcheck="false" style="text-transform: lowercase;" />
 					<a
 						asp-page="/Wiki/Referrers"
 						asp-route-path="Games/@Model.Game.Abbreviation"
@@ -29,7 +29,7 @@
 						Referrers
 					</a>
 				</div>
-				<span asp-validation-for="Game.Abbreviation" class="text-danger"></span>
+				<span asp-validation-for="Game.Abbreviation"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Game.GameResourcesPage"></label>
@@ -37,38 +37,35 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text">@(Request.ToBaseUrl())/</span>
 					</div>
-					<input type="text" asp-for="Game.GameResourcesPage" class="form-control" autocomplete="off" spellcheck="false" />
+					<input asp-for="Game.GameResourcesPage" autocomplete="off" spellcheck="false" />
 				</div>
-				<span asp-validation-for="Game.GameResourcesPage" class="text-danger"></span>
+				<span asp-validation-for="Game.GameResourcesPage"></span>
 			</fieldset>
-		</div>
-		<div class="col-lg-6">
+		</column>
+		<column lg="6">
 			<fieldset>
 				<label asp-for="Game.Aliases"></label>
-				<input type="text" asp-for="Game.Aliases" class="form-control" autocomplete="off" spellcheck="false" />
-				<span asp-validation-for="Game.Aliases" class="text-danger"></span>
+				<input asp-for="Game.Aliases" autocomplete="off" spellcheck="false" />
+				<span asp-validation-for="Game.Aliases"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Game.ScreenshotUrl"></label>
-				<input type="text" asp-for="Game.ScreenshotUrl" class="form-control" autocomplete="off" spellcheck="false" />
-				<span asp-validation-for="Game.ScreenshotUrl" class="text-danger"></span>
+				<input asp-for="Game.ScreenshotUrl" autocomplete="off" spellcheck="false" />
+				<span asp-validation-for="Game.ScreenshotUrl"></span>
 			</fieldset>
-		</div>
+		</column>
 	</row>
 	<fieldset>
 		<label asp-for="Game.Genres"></label>
-		<select asp-for="Game.Genres" multiselect="true" asp-items="Model.AvailableGenres" class="form-select"></select>
+		<select asp-for="Game.Genres" multiselect="true" asp-items="Model.AvailableGenres"></select>
 	</fieldset>
 	<fieldset>
 		<label asp-for="Game.Groups"></label>
-		<select asp-for="Game.Groups" multiselect="true" asp-items="Model.AvailableGroups" class="form-select"></select>
+		<select asp-for="Game.Groups" multiselect="true" asp-items="Model.AvailableGroups"></select>
 	</fieldset>
 	<form-button-bar>
-		<submit-button id="submit-btn"></submit-button>
+		<submit-button edit="@Model.Id.HasValue"></submit-button>
 		<cancel-link asp-page="List"></cancel-link>
-		<div class="form-check-inline">
-			<label asp-for="Game.MinorEdit" class="form-check-label"></label>
-			<input asp-for="Game.MinorEdit" type="checkbox" class="form-check-input"/>
-		</div>
+		<minor-edit></minor-edit>
 	</form-button-bar>
 </form>

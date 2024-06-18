@@ -20,15 +20,15 @@
 	<row class="mt-3">
 		<column md="6">
 			<label asp-for="Search.Statuses"></label>
-			<select asp-for="Search.Statuses" multiselect="true" asp-items="Model.AvailableStatuses" class="form-select"></select>
+			<select asp-for="Search.Statuses" multiselect="true" asp-items="Model.AvailableStatuses"></select>
 		</column>
 		<column md="6">
 			<label asp-for="Search.Years"></label>
-			<select asp-for="Search.Years" asp-items="selectAvailableYears" multiselect="true" class="form-select"></select>
+			<select asp-for="Search.Years" asp-items="selectAvailableYears" multiselect="true"></select>
 			<label asp-for="Search.User"></label>
-			<input asp-for="Search.User" user-search="true" class="form-control" />
+			<input asp-for="Search.User" user-search="true" />
 			<label asp-for="Search.System"></label>
-			<select asp-for="Search.System" asp-items="Model.SystemList" class="form-select"></select>
+			<select asp-for="Search.System" asp-items="Model.SystemList"></select>
 		</column>
 	</row>
 	<submit-button class="mt-1"><i class="fa fa-filter"></i> Filter</submit-button>

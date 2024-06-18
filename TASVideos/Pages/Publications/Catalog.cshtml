@@ -6,27 +6,27 @@
 
 <form client-side-validation="true" method="post">
 	<row>
-		<div class="col-lg-6">
+		<column lg="6">
 			<fieldset>
 				<label asp-for="Catalog.System"></label>
-				<select asp-for="Catalog.System" asp-items="@Model.AvailableSystems" class="form-select"></select>
-				<span asp-validation-for="Catalog.System" class="text-danger"></span>
+				<select asp-for="Catalog.System" asp-items="@Model.AvailableSystems" data-id="system" data-return-url="@HttpContext.CurrentPathToReturnUrl()"></select>
+				<span asp-validation-for="Catalog.System"></span>
 			</fieldset>
 			<fieldset>
 				<label asp-for="Catalog.SystemFramerate"></label>
-				<select asp-for="Catalog.SystemFramerate" asp-items="@Model.AvailableSystemFrameRates" class="form-select"></select>
-				<span asp-validation-for="Catalog.SystemFramerate" class="text-danger"></span>
+				<select asp-for="Catalog.SystemFramerate" asp-items="@Model.AvailableSystemFrameRates" data-id="system-framerate"></select>
+				<span asp-validation-for="Catalog.SystemFramerate"></span>
 			</fieldset>
-		</div>
-		<div class="col-lg-6">
+		</column>
+		<column lg="6">
 			<fieldset>
 				<fullrow>
 					<label asp-for="Catalog.Game"></label>
 				</fullrow>
 				<row>
 					<div class="col-10">
-						<select asp-for="Catalog.Game" asp-items="@Model.AvailableGames" class="form-select"></select>
-						<span asp-validation-for="Catalog.Game" class="text-danger"></span>
+						<select asp-for="Catalog.Game" asp-items="@Model.AvailableGames" data-id="game"></select>
+						<span asp-validation-for="Catalog.Game"></span>
 					</div>
 					<div class="col-2">
 						<button id="create-game" type="button" class="btn btn-primary">New</button>
@@ -39,8 +39,8 @@
 				</fullrow>
 				<row>
 					<div class="col-10">
-						<select asp-for="Catalog.GameVersion" asp-items="@Model.AvailableVersions" class="form-select"></select>
-						<span asp-validation-for="Catalog.GameVersion" class="text-danger"></span>
+						<select asp-for="Catalog.GameVersion" asp-items="@Model.AvailableVersions" data-id="version"></select>
+						<span asp-validation-for="Catalog.GameVersion"></span>
 					</div>
 					<div class="col-2">
 						<button id="create-version" type="button" class="btn btn-primary">New</button>
@@ -53,35 +53,23 @@
 				</fullrow>
 				<row>
 					<div class="col-10">
-						<select asp-for="Catalog.Goal" asp-items="@Model.AvailableGoals" class="form-select"></select>
-						<span asp-validation-for="Catalog.Goal" class="text-danger"></span>
+						<select asp-for="Catalog.Goal" asp-items="@Model.AvailableGoals" data-id="goal"></select>
+						<span asp-validation-for="Catalog.Goal"></span>
 					</div>
 					<div class="col-2">
 						<button id="create-goal" type="button" class="btn btn-primary">Manage</button>
 					</div>
 				</row>
 			</fieldset>
-		</div>
+		</column>
 	</row>
 	<form-button-bar>
-		<submit-button id="submit-btn"></submit-button>
+		<submit-button></submit-button>
 		<cancel-link asp-page="View" asp-route-id="@Model.Id"></cancel-link>
-		<div class="form-check-inline">
-			<label asp-for="Catalog.MinorEdit" class="form-check-label"></label>
-			<input asp-for="Catalog.MinorEdit" type="checkbox" class="form-check-input"/>
-		</div>
+		<minor-edit></minor-edit>
 	</form-button-bar>
 </form>
 
 @section Scripts {
 	<script src="/js/catalog.js"></script>
-	<script>
-		enableCataloging(
-			"@Html.IdFor(m => m.Catalog.System)",
-			"@Html.IdFor(m => m.Catalog.SystemFramerate)",
-			"@Html.IdFor(m => m.Catalog.Game)",
-			"@Html.IdFor(m => m.Catalog.GameVersion)",
-			"@Html.IdFor(m => m.Catalog.Goal)",
-			"@HttpContext.CurrentPathToReturnUrl()");
-	</script>
 }

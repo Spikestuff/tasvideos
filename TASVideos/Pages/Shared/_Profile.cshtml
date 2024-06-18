@@ -4,7 +4,7 @@
 	bool canViewPrivateData = User.Has(PermissionTo.ViewPrivateUserData) || Model.Id == User.GetUserId();
 }
 <row>
-	<div class="col-md-6">
+	<column md="6">
 		<card class="mb-2">
 			<card-header>
 				<row>
@@ -150,8 +150,8 @@
 				</div>
 			</card-body>
 		</card>
-	</div>
-	<div class="col-md-6">
+	</column>
+	<column md="6">
 		<card class="text-start text-md-end mb-2">
 			<card-header><h4>Publications</h4></card-header>
 			<card-body>
@@ -193,7 +193,7 @@
 							<a
 								asp-page="/Submissions/Index"
 								asp-route-user="@Model.UserName"
-								asp-route-statusfilter="@((int)sub.Status)">
+								asp-route-statuses="@((int)sub.Status)">
 								@sub.Count
 							</a>
 							@sub.Status.EnumDisplayName()
@@ -232,5 +232,5 @@
 				@string.Join(", ", Model.UserFiles.Systems.Where(s => !string.IsNullOrWhiteSpace(s)))
 			</card-body>
 		</card>
-	</div>
+	</column>
 </row>
